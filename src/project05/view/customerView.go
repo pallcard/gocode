@@ -100,6 +100,51 @@ func (this *customerView) exit() {
 	}
 }
 
+func (this *customerView) update() {
+	fmt.Println("----------------------修改客户-------------------------")
+	fmt.Print("请输入修改客户编号(-1退出)：")
+	id := 0
+	fmt.Scanln(&id)
+	if id == -1 {
+		return 
+	}
+	index := this.customerService.FindIndexById(id)
+	if index == -1 {
+		fmt.Print("----------------------id不存在-------------------------")
+		return
+	}
+
+	customer := this.customerService.FindByIndex(index)
+
+	fmt.Printf("姓名[%v]:", customer.Name)
+	name := ""
+	fmt.Scanln(&name)
+
+	fmt.Printf("性别[%v]:", customer.Gender)
+	gender := ""
+	fmt.Scanln(&gender)
+
+	fmt.Printf("年龄[%v]:", customer.Age)
+	age := 0
+	fmt.Scanln(&age)
+
+	fmt.Printf("电话[%v]:", customer.Phone)
+	phone := ""
+	fmt.Scanln(&phone)
+
+	fmt.Printf("邮箱[%v]:", customer.Email)
+	email := ""
+	fmt.Scanln(&email)
+
+	customer = model.NewCustomerWithoutId(name, gender, age, phone, email)
+	
+	if this.customerService.Update(id, customer) {
+		fmt.Println("----------------------修改客户完成-------------------------")
+	} else {
+		fmt.Println("----------------------修改客户失败-------------------------")
+	}
+}
+
 
 func (this *customerView) mainMenu() {
 	for {
@@ -117,7 +162,7 @@ func (this *customerView) mainMenu() {
 			case "1" :
 				this.add()
 			case "2" :
-				fmt.Println("修改客户")
+				this.update()
 			case "3" :
 				this.delete()
 			case "4" :
