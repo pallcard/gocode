@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type Customer struct {
 	Id int
 	Name string
@@ -10,8 +12,8 @@ type Customer struct {
 }
 
 func NewCustomer(id int, name string, gender string, age int,
-	 phone string, email string) *Customer {
-	return &Customer {
+	 phone string, email string) Customer {
+	return Customer {
 		Id : id,
 		Name : name,
 		Gender : gender,
@@ -19,4 +21,20 @@ func NewCustomer(id int, name string, gender string, age int,
 		Phone : phone,
 		Email : email,
 	}
+}
+
+func NewCustomerWithoutId(name string, gender string, age int,
+	phone string, email string) Customer {
+   return Customer {
+	   Name : name,
+	   Gender : gender,
+	   Age : age,
+	   Phone : phone,
+	   Email : email,
+   }
+}
+
+func (this Customer) GetInfo() string {
+	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v\t", this.Id, this.Name, this.Gender, this.Age, this.Phone, this.Email)
+	return info
 }
