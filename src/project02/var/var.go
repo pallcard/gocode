@@ -1,5 +1,6 @@
 package main
 import "fmt"
+import "project02/test"
 
 // 全局变量
 var n1 = 1
@@ -7,7 +8,6 @@ var (
 	n2 = 1
 	n3 = 2
 )
-
 
 func main() {
 	// 变量定义
@@ -19,4 +19,10 @@ func main() {
 	fmt.Println("j=", j, "j1=", j1, "j2=", j2)
 	fmt.Println("k=", k, "k1=", k1, "k2=", k2)
 	fmt.Println("n1=", n1, "n2=", n2, "n3=", n3)
+
+	{
+		var i = 10
+		fmt.Println("i=", i)
+	}
+	fmt.Println("test=", test.Test)
 }
