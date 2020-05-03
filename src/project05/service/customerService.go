@@ -28,3 +28,24 @@ func (this *CustomerService) Add(customer model.Customer) bool {
 	this.customers = append(this.customers, customer)
 	return true
 }
+
+func (this *CustomerService) FindById(id int) int {
+
+	index := -1
+	for i := 0; i < len(this.customers); i++ {
+		if this.customers[i].Id == id {
+			index = i
+		}
+	}
+	return index
+}
+
+func (this *CustomerService) Delete(id int) bool {
+	index := this.FindById(id)
+	if index == -1 {
+		return false
+	}
+
+	this.customers = append(this.customers[:index], this.customers[index+1:]...) 
+	return true
+}

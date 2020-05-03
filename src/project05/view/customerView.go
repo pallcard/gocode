@@ -58,6 +58,34 @@ func (this *customerView) add() {
  
 }
 
+func (this *customerView) delete() {
+	fmt.Println("----------------------删除客户-------------------------")
+	fmt.Print("请输入删除客户编号(-1退出)：")
+	id := 0
+	fmt.Scanln(&id)
+	if id == -1 {
+		return 
+	}
+
+	fmt.Println("确认删除吗？y/n:")
+	confirm := ""
+	for {
+		fmt.Scanln(&confirm)
+		if confirm == "y" || confirm == "n" {
+			break
+		}
+		fmt.Print("输入有误，请重新输入 y/n:")
+	}
+
+	if confirm == "y" {
+		if this.customerService.Delete(id) {
+			fmt.Print("----------------------删除客户完成-------------------------")
+		} else {
+			fmt.Print("----------------------删除失败，id不存在-------------------------")
+		}
+	}	
+}
+
 func (this *customerView) exit() {
 	fmt.Print("确认退出吗？y/n:")
 	for {
@@ -91,7 +119,7 @@ func (this *customerView) mainMenu() {
 			case "2" :
 				fmt.Println("修改客户")
 			case "3" :
-				fmt.Println("删除客户")
+				this.delete()
 			case "4" :
 				this.list()
 			case "5" :
