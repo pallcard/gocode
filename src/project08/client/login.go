@@ -6,6 +6,7 @@ import (
 	"encoding/binary"
 	"net"
 	"project08/common/message"
+
 )
 
 func login(userId int, userPwd string) (err error) {
@@ -54,6 +55,28 @@ func login(userId int, userPwd string) (err error) {
 		return
 	}
 
-	fmt.Printf("客户端发送完长度=%d\n", len(data), string(data))
-	return
+	_, err = conn.Write(data)
+	if err != nil {
+		fmt.Println("conn.Write(data) fail", err)
+		return
+	}
+
+	// time.Sleep(20 * time.Second)
+	// fmt.Printf("客户端发送完长度=%d\n", len(data), string(data))
+
+	mes, err = readPkg(conn)
+	if err != nil {
+		fmt.Println("readPkg(conn) fail", err)
+		return
+	}
+
+	var loginResMes message.LoginResMes
+	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
+
+	if loginResMes.Code == 200 {
+		fmt.Println("登录成功")
+	} else if loginResMes.Code == 500 {
+		fmt.Println(loginResMes.Error)
+	}
+ 	return
 }

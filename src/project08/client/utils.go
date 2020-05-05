@@ -7,9 +7,7 @@ import (
 	"encoding/json"
 	"encoding/binary"
 	"errors"
-	"io"
 )
-
 
 func readPkg(conn net.Conn) (mes message.Message, err error) {
 	buf := make([]byte, 8096)
@@ -96,68 +94,4 @@ func writePkg(conn net.Conn, data []byte) (err error) {
 		return
 	}
 	return
-}
-
-func serverProcessMes(conn net.Conn, mes *message.Message) (err error) {
-	switch mes.Type {
-		case message.LoginMesType:
-			err = serverProcessLogin(conn, mes)
-		case message.RegisterMesType:
-			//
-		default:
-			fmt.Println("消息类型不存在")
-	}
-
-	return
-}
-
-func process(conn net.Conn) {
-	
-	defer conn.Close()
-	
-	for {
-
-		mes, err := readPkg(conn)
-		if err != nil {
-			if err == io.EOF {
-				fmt.Println("json.Unmarshal fail err=", err)
-				return
-			} else {
-				fmt.Println("json.Unmarshal fail err=", err)
-				return
-			}
-		}
-		// fmt.Println("mes=", mes)
-
-		err = serverProcessMes(conn, &mes)
-		if err != nil {
-			return
-		}
-	}
-}
-
-func main() {
-
-	fmt.Println("服务器在8889端口监听.....")
-	listen, err := net.Listen("tcp", "0.0.0.0:8889")
-
-	defer listen.Close()
-
-	if err != nil {
-		fmt.Println("net.Listen err=", err)
-		return
-	}
-
-	for {
-		fmt.Println("等待客户端来链接服务器.....")
-
-		conn, err := listen.Accept()
-		if err != nil {
-			fmt.Println("listen.Accpet err=", err)
-		}
-
-		go process(conn)
-
-	}
-
 }
