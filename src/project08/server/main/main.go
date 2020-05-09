@@ -1,15 +1,16 @@
 package main
 
 import (
+	_ "encoding/binary"
+	_ "encoding/json"
+	_ "errors"
 	"fmt"
+	_ "io"
 	"net"
-	_"project08/common/message"
-	_"encoding/json"
-	_"encoding/binary"
-	_"errors"
-	_"io"
+	_ "project08/common/message"
+	"project08/server/model"
+	"time"
 )
-
 
 // func readPkg(conn net.Conn) (mes message.Message, err error) {
 // 	buf := make([]byte, 8096)
@@ -19,7 +20,7 @@ import (
 // 		// err = errors.New("read pkg header error")
 // 		return
 // 	}
-	
+
 // 	var pkgLen uint32
 // 	pkgLen = binary.BigEndian.Uint32(buf[0:4])
 
@@ -53,7 +54,7 @@ import (
 // 	// id=100, pwd=123456
 // 	if loginMes.UserId == 100 && loginMes.UserPwd == "123456" {
 // 		loginResMes.Code = 200
-		
+
 // 	} else {
 // 		loginResMes.Code = 500
 // 		loginResMes.Error = "改用户不存在，请注册使用"
@@ -112,9 +113,9 @@ import (
 // }
 
 func process(conn net.Conn) {
-	
+
 	defer conn.Close()
-	
+
 	// for {
 
 	// 	mes, err := readPkg(conn)
@@ -136,7 +137,7 @@ func process(conn net.Conn) {
 	// }
 
 	processor := &Processor{
-		Conn : conn,
+		Conn: conn,
 	}
 
 	err := processor.Process2()
@@ -147,8 +148,14 @@ func process(conn net.Conn) {
 
 }
 
+func initUserDao() {
+	model.MyUserDao = model.NewUserDao(pool)
+}
+
 func main() {
 
+	initPool("localhost:6379", 16, 0, 300*time.Second)
+	initUserDao()
 	fmt.Println("服务器在8889端口监听.....")
 	listen, err := net.Listen("tcp", "0.0.0.0:8889")
 

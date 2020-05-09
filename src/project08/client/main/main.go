@@ -7,6 +7,7 @@ import (
 
 var userId int
 var userPwd string
+var userName string
 
 func main() {
 
@@ -23,7 +24,7 @@ func main() {
 
 		switch key {
 		case 1:
-			fmt.Print("登录聊天室")
+			fmt.Println("登录聊天室")
 			fmt.Print("请输入用户的id:")
 			fmt.Scanf("%d\n", &userId)
 			fmt.Print("请输入用户的密码:")
@@ -32,7 +33,15 @@ func main() {
 			up := &process.UserProcess{}
 			up.Login(userId, userPwd)
 		case 2:
-			fmt.Print("注册用户")
+			fmt.Println("注册用户")
+			fmt.Print("用户id:")
+			fmt.Scanf("%d\n", &userId)
+			fmt.Print("密码:")
+			fmt.Scanf("%s\n", &userPwd)
+			fmt.Print("昵称:")
+			fmt.Scanf("%s\n", &userName)
+			up := &process.UserProcess{}
+			up.Register(userId, userPwd, userName)
 		case 3:
 			fmt.Print("退出系统")
 		default:
