@@ -2,7 +2,6 @@ package process
 
 import (
 	"fmt"
-	"net"
 	"os"
 	"project08/client/utils"
 )
@@ -32,7 +31,7 @@ func ShowMenu() {
 
 }
 
-func serverProcessMes(Conn net.Conn) {
+func serverProcessMes() {
 	tf := &utils.Transfer{}
 	for {
 		fmt.Println("客户端正在等待读取服务器发送的消息")

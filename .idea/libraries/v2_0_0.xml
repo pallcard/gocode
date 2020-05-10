@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="v2.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/pkg/mod/golang.org/x/tools@v0.0.0-20190408220357-e5b8258f4918/go/packages/testdata/TestName_Modules/pkg/mod/cache/download/github.com/heschik/tools-testrepo/v2/@v/v2.0.0.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

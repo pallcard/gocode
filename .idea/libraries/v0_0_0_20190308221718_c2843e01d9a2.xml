@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="v0.0.0-20190308221718-c2843e01d9a2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/pkg/mod/cache/download/golang.org/x/crypto/@v/v0.0.0-20190308221718-c2843e01d9a2.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
