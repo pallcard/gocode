@@ -17,7 +17,7 @@ type Transfer struct {
 
 func (this * Transfer) ReadPkg() (mes message.Message, err error) {
 	// buf := make([]byte, 8096)
-	fmt.Println("读取客户端发送的数据.....")
+	fmt.Println("读取发送的数据.....")
 	_, err = this.Conn.Read(this.Buf[:4])
 	if err != nil {
 		// err = errors.New("read pkg header error")

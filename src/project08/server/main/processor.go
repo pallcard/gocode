@@ -14,6 +14,7 @@ type Processor struct {
 }
 
 func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
+	fmt.Printf("serverProcessMes:%v,type:%v\n",mes, mes.Type)
 	switch mes.Type {
 	case message.LoginMesType:
 		up := &process2.UserProcess{
@@ -25,6 +26,10 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 			Conn: this.Conn,
 		}
 		err = up.ServerProcessRegister(mes)
+
+	case message.SmsMesType:
+		smsProcess := &process2.SmsProcess{}
+		smsProcess.SendGroupMes(mes)
 	default:
 		fmt.Println("消息类型不存在")
 	}
@@ -41,14 +46,13 @@ func (this *Processor) Process2() (err error) {
 		mes, err := tf.ReadPkg()
 		if err != nil {
 			if err == io.EOF {
-				fmt.Println("json.Unmarshal fail err=", err)
+				fmt.Println("Process2 json.Unmarshal fail err=", err)
 				return err
 			} else {
-				fmt.Println("json.Unmarshal fail err=", err)
+				fmt.Println("Process2 json.Unmarshal fail err=", err)
 				return err
 			}
 		}
-		// fmt.Println("mes=", mes)
 
 		err = this.serverProcessMes(&mes)
 		if err != nil {

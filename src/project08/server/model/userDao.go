@@ -36,7 +36,7 @@ func (this *UserDao) getUserById(conn redis.Conn, id int) (user *User, err error
 	err = json.Unmarshal([]byte(res), user)
 
 	if err != nil {
-		fmt.Println("json.Unmarshal err=", err)
+		fmt.Println("getUserById, json.Unmarshal err=", err)
 		return
 	}
 	return

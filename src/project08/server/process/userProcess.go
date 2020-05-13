@@ -12,7 +12,53 @@ import (
 
 type UserProcess struct {
 	Conn net.Conn
+	UserId int
 }
+
+func (this *UserProcess) NotifyOtherOnlineUser(userId int)  {
+	for id, up :=range userMgr.onlineUsers {
+		if id == userId {
+			continue
+		}
+		up.NotifyMeOnlineUser(userId)
+	}
+}
+
+func (this *UserProcess) NotifyMeOnlineUser(userId int)  {
+
+	var mes message.Message
+	mes.Type = message.NotifyUserStatusMesType
+
+	var notifyUserStatusMes message.NotifyUserStatusMes
+
+	notifyUserStatusMes.UserId = userId
+	notifyUserStatusMes.Status = message.UserOnline
+
+	data, err := json.Marshal(notifyUserStatusMes)
+	if err != nil {
+		fmt.Println("NotifyMeOnlineUser json.Marshal err=", err)
+		return
+	}
+	mes.Data = string(data)
+
+	data, err = json.Marshal(mes)
+	if err != nil {
+		fmt.Println("NotifyMeOnlineUser json.Marshal err=", err)
+		return
+	}
+
+	tf := &utils.Transfer{
+		Conn: this.Conn,
+	}
+
+	err = tf.WritePkg(data)
+	if err != nil {
+		fmt.Println("NotifyMeOnlineUser err=", err)
+		return
+	}
+}
+
+
 
 func (this *UserProcess) ServerProcessRegister(mes *message.Message) (err error) {
 	var registerMes message.RegisterMes
@@ -62,9 +108,10 @@ func (this *UserProcess) ServerProcessRegister(mes *message.Message) (err error)
 
 func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	var loginMes message.LoginMes
+	fmt.Printf("mes.Data= %v\n", mes.Data)
 	err = json.Unmarshal([]byte(mes.Data), &loginMes)
 	if err != nil {
-		fmt.Println("json.Unmarshal fail err=", err)
+		fmt.Println("ServerProcessLogin, json.Unmarshal fail err=", err)
 		return
 	}
 
@@ -90,16 +137,14 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 
 	} else {
 		loginResMes.Code = 200
+		this.UserId = loginMes.UserId
+		userMgr.AddOnlineUser(this)
+		this.NotifyOtherOnlineUser(loginMes.UserId)
+		for id, _:= range userMgr.onlineUsers {
+			loginResMes.UserIds = append(loginResMes.UserIds, id)
+		}
 		fmt.Println(user, "登录成功")
 	}
-	// id=100, pwd=123456
-	// if loginMes.UserId == 100 && loginMes.UserPwd == "123456" {
-	// 	loginResMes.Code = 200
-
-	// } else {
-	// 	loginResMes.Code = 500
-	// 	loginResMes.Error = "改用户不存在，请注册使用"
-	// }
 
 	data, err := json.Marshal(loginResMes)
 	if err != nil {
@@ -118,5 +163,6 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 		Conn: this.Conn,
 	}
 	err = tf.WritePkg(data)
+	fmt.Printf("ServerProcessLogin success, loginResMes=%v\n",loginResMes)
 	return
 }

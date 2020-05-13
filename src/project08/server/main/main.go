@@ -116,26 +116,6 @@ func process(conn net.Conn) {
 
 	defer conn.Close()
 
-	// for {
-
-	// 	mes, err := readPkg(conn)
-	// 	if err != nil {
-	// 		if err == io.EOF {
-	// 			fmt.Println("json.Unmarshal fail err=", err)
-	// 			return
-	// 		} else {
-	// 			fmt.Println("json.Unmarshal fail err=", err)
-	// 			return
-	// 		}
-	// 	}
-	// 	// fmt.Println("mes=", mes)
-
-	// 	err = serverProcessMes(conn, &mes)
-	// 	if err != nil {
-	// 		return
-	// 	}
-	// }
-
 	processor := &Processor{
 		Conn: conn,
 	}

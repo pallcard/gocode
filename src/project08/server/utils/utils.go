@@ -34,9 +34,10 @@ func (this *Transfer) ReadPkg() (mes message.Message, err error) {
 
 	err = json.Unmarshal(this.Buf[:pkgLen], &mes)
 	if err != nil {
-		fmt.Println("json.Unmarshal fail err=", err)
+		fmt.Println("ReadPkg json.Unmarshal fail err=", err)
 		return
 	}
+	fmt.Println("ReadPkg success")
 	return
 }
 
@@ -58,5 +59,6 @@ func (this *Transfer) WritePkg(data []byte) (err error) {
 		fmt.Println("conn.Write(data) fail", err)
 		return
 	}
+	fmt.Println("WritePkg success")
 	return
 }

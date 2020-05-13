@@ -5,6 +5,14 @@ const (
 	LoginResMesType    = "LoginResMes"
 	RegisterMesType    = "RegisterMes"
 	RegisterResMesType = "RegisterResMes"
+	NotifyUserStatusMesType = "NotifyUserStatusMes"
+	SmsMesType = "SmsMes"
+)
+
+const (
+	UserOnline = iota
+	UseOffline
+	UserBusyStatus
 )
 
 type Message struct {
@@ -20,6 +28,7 @@ type LoginMes struct {
 
 type LoginResMes struct {
 	Code  int    `json:"code"`
+	UserIds []int `json:"userIds"`
 	Error string `json:"error"`
 }
 
@@ -30,4 +39,14 @@ type RegisterMes struct {
 type RegisterResMes struct {
 	Code  int    `json:"code"`
 	Error string `json:"error"`
+}
+
+type NotifyUserStatusMes struct {
+	UserId int `json:"userId"`
+	Status int `json:"status"`
+}
+
+type SmsMes struct {
+	Content string `json:"content"`
+	User User
 }
