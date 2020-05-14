@@ -9,14 +9,15 @@ import (
 	"project08/common/message"
 )
 
-func ShowMenu() {
-	fmt.Println("\n----------------恭喜xxx登录成功----------------")
+func ShowMenu(userId int) {
+	fmt.Printf("\n----------------恭喜%d登录成功----------------\n", userId)
 	fmt.Println("              1. 显示在线用户列表")
 	fmt.Println("              2. 发送消息")
-	fmt.Println("              3. 信息列表")
+	fmt.Println("              3. 私聊")
 	fmt.Println("              4. 退出系统")
 	fmt.Print("请选择（1-4）：")
 	var key int
+	var toUserId int
 	var content string
 
 	smsProcess := &SmsProcess{}
@@ -30,7 +31,12 @@ func ShowMenu() {
 		fmt.Scanf("%s\n", &content)
 		smsProcess.SendGroupMes(content)
 	case 3:
-		fmt.Println("信息列表")
+		fmt.Println("私聊")
+		fmt.Print("userId:")
+		fmt.Scanf("%d\n", &toUserId)
+		fmt.Print("发送消息内容:")
+		fmt.Scanf("%s\n", &content)
+		smsProcess.SendPersonMes(toUserId, content)
 	case 4:
 		fmt.Println("退出系统")
 		os.Exit(0)
@@ -58,8 +64,10 @@ func serverProcessMes(conn net.Conn) {
 			var notifyUserStatusMes message.NotifyUserStatusMes
 			json.Unmarshal([]byte(mes.Data), &notifyUserStatusMes)
 			updateUserStatus(&notifyUserStatusMes)
-		case message.SmsMesType:
+		case message.SmsMesToGroupType:
 			outPutGroupMes(&mes)
+		case message.SmsMesToPersonType:
+			outPutPersonMes(&mes)
 		default:
 			fmt.Println("未知消息类型")
 

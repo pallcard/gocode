@@ -163,6 +163,10 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 		Conn: this.Conn,
 	}
 	err = tf.WritePkg(data)
+	if err != nil {
+		fmt.Println("ServerProcessLogin tf.WritePkg fail err=", err)
+		return
+	}
 	fmt.Printf("ServerProcessLogin success, loginResMes=%v\n",loginResMes)
 	return
 }

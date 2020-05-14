@@ -168,7 +168,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		go serverProcessMes(conn)
 
 		for {
-			ShowMenu()
+			ShowMenu(userId)
 		}
 	} else if loginResMes.Code == 500 {
 		fmt.Println(loginResMes.Error)

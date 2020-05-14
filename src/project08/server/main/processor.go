@@ -26,10 +26,12 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 			Conn: this.Conn,
 		}
 		err = up.ServerProcessRegister(mes)
-
-	case message.SmsMesType:
+	case message.SmsMesToGroupType:
 		smsProcess := &process2.SmsProcess{}
 		smsProcess.SendGroupMes(mes)
+	case message.SmsMesToPersonType:
+		smsProcess := &process2.SmsProcess{}
+		smsProcess.SendToPersonMes(mes)
 	default:
 		fmt.Println("消息类型不存在")
 	}
