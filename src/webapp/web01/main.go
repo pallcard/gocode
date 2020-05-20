@@ -1,4 +1,4 @@
-package webapp
+package main
 
 import (
 	"fmt"
