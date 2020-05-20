@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://39.106.231.201:3306</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="txy" uuid="f4ed4240-72b3-4438-9db4-1fbe66c33846">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://203.195.238.249:3306/</jdbc-url>
+    </data-source>
   </component>
 </project>

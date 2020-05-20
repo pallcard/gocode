@@ -10,6 +10,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler)
+	//http.HandleFunc("/", handler)
+	http.ListenAndServe(":8080", mux)
+	//http.ListenAndServe(":8080", nil)
 }
